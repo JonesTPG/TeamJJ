@@ -1,0 +1,160 @@
+body,
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+.App {
+  text-align: center;
+}
+
+.comment-text {
+  font-style: italic;
+}
+
+.site-title {
+  font-size: 24px;
+  text-transform: uppercase;
+  margin: auto;
+}
+
+.body-container {
+  padding-top: 60px;
+  display: flex;
+
+  /*align-items: stretch;*/
+  /* padding: 30px; */
+}
+
+.selectedCourse {
+  padding: 50px;
+  border: 2px solid #333;
+  border-radius: 10px;
+  margin-left: 10px;
+  margin-top: 11px;
+}
+.listElement:hover {
+  background-color: #aeb6bf;
+  transition: 0.7s;
+  color: black;
+  font-size: 18px;
+  cursor: pointer;
+}
+.course-view {
+  padding-top: 5px;
+  text-align: left;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  margin-left: 10px;
+}
+
+.noCourseTxt {
+  width: 90%;
+  font-size: 50px;
+}
+
+.appbar {
+  background-color: #2196f3;
+}
+.score {
+  text-align: center !important;
+}
+
+/*comment-form*/
+
+.my-form .form-group label {
+  display: block;
+  padding-bottom: 5px;
+}
+.my-form .form-group .textarea {
+  padding-top: 15px;
+  width: 100%;
+}
+
+.button {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 15px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+}
+.my-form p {
+  color: red;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+/*rating bar*/
+
+.checked {
+  color: orange;
+}
+
+.commentWriter {
+  color: #117743;
+}
+
+/*layout styling*/
+.row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+}
+.some-page-wrapper {
+  margin: 70px;
+  background-color: #fff;
+}
+
+.Courses-inputInput-7 {
+  width: 100% !important;
+}
+.Courses-inputInput-9 {
+  padding-left: 60px !important;
+}
+.BottomAppBar-toolbar-15 {
+  align-items: flex-end !important;
+}
+.footer {
+  margin: auto !important;
+  width: 100% !important;
+  padding: 10px !important;
+}
+
+header,
+.MuiPaper-root-17
+  .MuiPaper-elevation4-23
+  .MuiAppBar-root-44
+  .MuiAppBar-positionFixed-45
+  .MuiAppBar-colorPrimary-51
+  mui-fixed
+  .BottomAppBar-appBar-14 {
+  max-height: 50px !important;
+}
+.listItem {
+  font-weight: 600;
+}
+
+/* progress bar */
+
+.progress-bar {
+  background-color: #333;
+  border-radius: 13px;
+  /* (height of inner div) / 2 + padding */
+  padding: 3px;
+}
+
+#progress {
+  background-color: #2196f3;
+  width: 20%; /* Adjust with JavaScript */
+  height: 20px;
+  border-radius: 10px;
+}
