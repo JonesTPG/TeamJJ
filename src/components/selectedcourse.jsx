@@ -4,6 +4,7 @@ import NewComment from "./newcomment";
 
 import Rating from "./rating"
 import axios from "axios";
+import queryString from "query-string";
 
 
 class SelectedCourse extends Component {
@@ -13,22 +14,33 @@ class SelectedCourse extends Component {
     this.state = {
       selected: {}, //stores the currently selected course's information
       comments: null, //stores the comments related to selected course
+      id: null   //NEW: gets the id from url
     };
+  }
+
+  componentDidMount() {
+    const parsed = queryString.parse(this.props.location.search);
+    this.setState({
+      id: parsed.id
+    });
+    this.getSelectedCourse(parsed.id);
+    this.getComments(parsed.id);
+    
   }
 
   //this component is dependent from the course id it gets, so we have to listen to
   //possible changes
   componentDidUpdate(prevProps, prevState) {
     if (this.props.courseid !== prevProps.courseid) {
-      this.getSelectedCourse();
-      this.getComments();
+      this.getSelectedCourse(this.state.id);
+      this.getComments(this.state.id);
       
     }
   }
 
   //fetches the selected course's information from the server. the id is given to this component as a prop
-  getSelectedCourse = () => {
-    axios.get("/api/course/" + this.props.courseid).then(response => {
+  getSelectedCourse = (id) => {
+    axios.get("/api/course/" + id).then(response => {
       let data = JSON.parse(response.data);
       this.setState({
         selected: data
@@ -38,8 +50,8 @@ class SelectedCourse extends Component {
   };
 
   //fetch the comments of a certain course from the database
-  getComments = () => {
-    axios.get("/api/comments/" + this.props.courseid).then(response => {
+  getComments = (id) => {
+    axios.get("/api/comments/" + id).then(response => {
       let data = JSON.parse(response.data);
       if (data.length === 0) {
         this.setState({
@@ -56,12 +68,12 @@ class SelectedCourse extends Component {
 
   //when a user posts a comment, this function is called from the child component.
   updateComments = () => {
-    this.getComments();
+    this.getComments(this.state.id);
 
   }
 
   updateRating = () => {
-    this.getSelectedCourse();
+    this.getSelectedCourse(this.state.id);
   }
 
   updateRatingBar = () => {
@@ -73,8 +85,8 @@ class SelectedCourse extends Component {
   }
 
   render() {
-    let id = this.props.courseid;
-
+    let id = this.state.id;
+    
     //there is no course selected
     if (id === null || id === "" || id === undefined) {
       return <div className="noCourseTxt">Valitse jokin kurssi</div>;
@@ -96,7 +108,7 @@ class SelectedCourse extends Component {
             </div>
 
             <Rating 
-              courseId={this.props.courseid}
+              courseId={this.state.id}
               updateFunction={this.updateRating}
             />
 
@@ -106,7 +118,7 @@ class SelectedCourse extends Component {
 
               <div className="new-comment">
                 <NewComment
-                  courseId={this.props.courseid}
+                  courseId={this.state.id}
                   updateFunction={this.updateComments}
                 />
               </div>
@@ -133,7 +145,7 @@ class SelectedCourse extends Component {
           </div>
 
           <Rating 
-              courseId={this.props.courseid}
+              courseId={this.state.id}
               updateFunction={this.updateRating}
           />
           <div className="comments-list">
@@ -160,7 +172,7 @@ class SelectedCourse extends Component {
           </div>
 
           <div className="new-comment">
-            <NewComment courseId={this.props.courseid}
+            <NewComment courseId={this.state.id}
                         updateFunction={this.updateComments}
             />
           </div>

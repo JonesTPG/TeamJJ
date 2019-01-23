@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom'
 import SelectedCourse from "./selectedcourse";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -132,8 +133,6 @@ class Courses extends Component {
     return (
       <div className="some-page-wrapper">
         <React.Fragment>
-          <div>
-            <div>
               <AppBar position="fixed">
                 <Toolbar className="appbar">
                   <img
@@ -164,14 +163,21 @@ class Courses extends Component {
                   </div>
                 </Toolbar>
               </AppBar>
-            </div>
+            
+
+
+
             <div className="row">
               <div className="column">
-                <div>
+             
                   <List className={classes.root}>
                     {filtered.slice(0, 12).map(course => (
                       <div className="listElement" key={course._id}>
-                        <ListItem
+                         <Link to={{
+                            pathname: "/course",
+                            search: "?id="+course._id}}>
+                         
+                         <ListItem
                           className="listItem"
                           onClick={() => this.setSelectedCourse(course._id)}
                         >
@@ -184,16 +190,13 @@ class Courses extends Component {
                             </IconButton>
                           </ListItemSecondaryAction>
                         </ListItem>
+                        </Link>
                         <Divider />
                       </div>
                     ))}
                   </List>
-                </div>
-              </div>
-              <div className="column">
-                <SelectedCourse courseid={this.state.course_id} />
-              </div>
             </div>
+           
           </div>
         </React.Fragment>
       </div>
