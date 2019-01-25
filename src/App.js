@@ -7,25 +7,20 @@ import SelectedCourse from "./components/selectedcourse";
 import Error from "./components/error";
 import About from "./components/about";
 
-
-
 class App extends Component {
   render() {
     return (
       <>
-      
-      <BrowserRouter>
-        <Switch>
-          <Route path="/course" component={SelectedCourse}/>
-          <Route path="/about" component={About}/>
-          <Route path="/" component={Courses} exact />
-          <Route component={Error} />
-        </Switch>
-      </BrowserRouter>
-      <Footer/>
-
+        <BrowserRouter>
+          <Switch>
+            <Route path="/course" component={SelectedCourse} />
+            <Route path="/about" component={About} />
+            <Route path="/" component={Courses} exact />
+            <Route component={Error} />
+          </Switch>
+        </BrowserRouter>
+        <Footer />
       </>
-     
     );
   }
 }

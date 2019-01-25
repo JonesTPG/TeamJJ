@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import Comment from "./comment";
 import NewComment from "./newcomment";
 
-import Rating from "./rating"
+import Rating from "./rating";
 import axios from "axios";
 import queryString from "query-string";
-
+import Appbar from "./appbar";
+import "../App.css";
 
 class SelectedCourse extends Component {
   constructor(props) {
@@ -14,7 +15,7 @@ class SelectedCourse extends Component {
     this.state = {
       selected: {}, //stores the currently selected course's information
       comments: null, //stores the comments related to selected course
-      id: null   //NEW: gets the id from url
+      id: null //NEW: gets the id from url
     };
   }
 
@@ -25,7 +26,6 @@ class SelectedCourse extends Component {
     });
     this.getSelectedCourse(parsed.id);
     this.getComments(parsed.id);
-    
   }
 
   //this component is dependent from the course id it gets, so we have to listen to
@@ -34,12 +34,11 @@ class SelectedCourse extends Component {
     if (this.props.courseid !== prevProps.courseid) {
       this.getSelectedCourse(this.state.id);
       this.getComments(this.state.id);
-      
     }
   }
 
   //fetches the selected course's information from the server. the id is given to this component as a prop
-  getSelectedCourse = (id) => {
+  getSelectedCourse = id => {
     axios.get("/api/course/" + id).then(response => {
       let data = JSON.parse(response.data);
       this.setState({
@@ -50,7 +49,7 @@ class SelectedCourse extends Component {
   };
 
   //fetch the comments of a certain course from the database
-  getComments = (id) => {
+  getComments = id => {
     axios.get("/api/comments/" + id).then(response => {
       let data = JSON.parse(response.data);
       if (data.length === 0) {
@@ -69,61 +68,61 @@ class SelectedCourse extends Component {
   //when a user posts a comment, this function is called from the child component.
   updateComments = () => {
     this.getComments(this.state.id);
-
-  }
+  };
 
   updateRating = () => {
     this.getSelectedCourse(this.state.id);
-  }
+  };
 
   updateRatingBar = () => {
     let element = document.getElementById("progress");
     let ratingPercentage = this.state.selected.rating * 20;
     let ratingString = ratingPercentage.toString() + "%";
     element.style["width"] = ratingString;
-
-  }
+  };
 
   render() {
     let id = this.state.id;
-    
+
     //there is no course selected
-    if (id === null || id === "" || id === undefined) {
-      return <div className="noCourseTxt">Valitse jokin kurssi</div>;
-    }
 
     //there are no comments, so don't render the comments list
-    else if (this.state.comments === null) {
+    if (this.state.comments === null) {
       return (
-        <div className="selectedCourse">
-          <div className="course-view">
-            <h3>
-              {this.state.selected.coursename} {this.state.selected.courseid}
-              <hr />
-            </h3>
-            <h4>Kurssin rating: {this.state.selected.rating}</h4>
+        <div className="some-page-wrapper">
+          <React.Fragment>
+            <Appbar position="fixed" />
+            <div className="selectedCourse">
+              <div className="course-view">
+                <h3>
+                  {this.state.selected.coursename}{" "}
+                  {this.state.selected.courseid}
+                  <hr />
+                </h3>
+                <h4>Kurssin rating: {this.state.selected.rating}</h4>
 
-            <div className="progress-bar">
-              <div id="progress"></div>
-            </div>
+                <div className="progress-bar">
+                  <div id="progress" />
+                </div>
 
-            <Rating 
-              courseId={this.state.id}
-              updateFunction={this.updateRating}
-            />
-
-
-            <div className="comments-list">
-              <p>Ei kommentteja.</p>
-
-              <div className="new-comment">
-                <NewComment
+                <Rating
                   courseId={this.state.id}
-                  updateFunction={this.updateComments}
+                  updateFunction={this.updateRating}
                 />
+
+                <div className="comments-list">
+                  <p>Ei kommentteja.</p>
+
+                  <div className="new-comment">
+                    <NewComment
+                      courseId={this.state.id}
+                      updateFunction={this.updateComments}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
+          </React.Fragment>
         </div>
       );
     }
@@ -131,52 +130,60 @@ class SelectedCourse extends Component {
     //course is selected and it has comments, display the information
     else {
       return (
-        <div className="selectedCourse">
-          <div className="course-view">
-            <h3>
-              {this.state.selected.coursename} {this.state.selected.courseid}
-              <hr />
+        <div>
+          <Appbar />
+          <div className="some-page-wrapper">
+            <React.Fragment>
+              <div className="row">
+                <div className="column">
+                  <div className="selectedCourse">
+                    <div className="course-view">
+                      <h3>
+                        {this.state.selected.coursename}{" "}
+                        {this.state.selected.courseid}
+                        <hr />
+                      </h3>
+                      <h4>
+                        Kurssin rating: {this.state.selected.rating.toFixed(2)}
+                      </h4>
 
-          </h3>
-          <h4>Kurssin rating: {this.state.selected.rating.toFixed(2)}</h4>
+                      <div className="progress-bar">
+                        <div id="progress" />
+                      </div>
 
-          <div className="progress-bar">
-              <div id="progress"></div>
-          </div>
+                      <Rating
+                        courseId={this.state.id}
+                        updateFunction={this.updateRating}
+                      />
+                      <div className="comments-list">
+                        <ul>
+                          {this.state.comments.map((comment, index) => (
+                            <div key={comment._id}>
+                              <Comment
+                                text={comment.text}
+                                upvotes={comment.upvotes}
+                                downvotes={comment.downvotes}
+                                username={comment.username}
+                                commentId={comment._id}
+                                index={index}
+                              />{" "}
+                              <hr />
+                            </div>
+                          ))}
+                        </ul>
+                      </div>
 
-          <Rating 
-              courseId={this.state.id}
-              updateFunction={this.updateRating}
-          />
-          <div className="comments-list">
-            <ul>
-              {this.state.comments.map((comment, index) => (
-                <div
-                  key={comment._id}
-                >
-
-                <Comment
-                  
-                  text={comment.text}
-                  upvotes={comment.upvotes}
-                  downvotes={comment.downvotes}
-                  username={comment.username}
-                  commentId={comment._id}
-                  index={index}
-                  
-                />   <hr></hr>
+                      <div className="new-comment">
+                        <NewComment
+                          courseId={this.state.id}
+                          updateFunction={this.updateComments}
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              
-              ))}
-            </ul>
-          </div>
-
-          <div className="new-comment">
-            <NewComment courseId={this.state.id}
-                        updateFunction={this.updateComments}
-            />
-          </div>
-
+              </div>
+            </React.Fragment>
           </div>
         </div>
       );

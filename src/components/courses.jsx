@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Link } from 'react-router-dom'
-import SelectedCourse from "./selectedcourse";
+import { Link } from "react-router-dom";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
@@ -133,70 +132,57 @@ class Courses extends Component {
     return (
       <div className="some-page-wrapper">
         <React.Fragment>
-              <AppBar position="fixed">
-                <Toolbar className="appbar">
-                  <img
-                    src="https://image.flaticon.com/icons/svg/910/910350.svg"
-                    className={classes.bigAvatar}
-                    alt="The choice is yours"
-                    style={{
-                      margin: "0px 6px 0px -13px",
-                      cursor: "pointer",
-                      opacity: 0.8
-                    }}
-                  />
-                  <div className={classes.search}>
-                    <div className={classes.searchIcon}>
-                      <SearchIcon className="search" />
-                    </div>
+          <AppBar position="fixed">
+            <Toolbar className="appbar">
+              <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                  <SearchIcon className="search" />
+                </div>
 
-                    <InputBase
-                      className="search"
-                      value={this.state.filter}
-                      onChange={this.setFilter}
-                      placeholder="Hae kurssia..."
-                      classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput
+                <InputBase
+                  className="search"
+                  value={this.state.filter}
+                  onChange={this.setFilter}
+                  placeholder="Hae kurssia..."
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput
+                  }}
+                />
+              </div>
+            </Toolbar>
+          </AppBar>
+
+          <div className="row">
+            <div className="column">
+              <List className={classes.root}>
+                {filtered.slice(0, 12).map(course => (
+                  <div className="listElement" key={course._id}>
+                    <Link
+                      to={{
+                        pathname: "/course",
+                        search: "?id=" + course._id
                       }}
-                    />
+                    >
+                      <ListItem
+                        className="listItem"
+                        onClick={() => this.setSelectedCourse(course._id)}
+                      >
+                        {course.courseid}
+                        <br />
+                        {course.coursename}
+                        <ListItemSecondaryAction>
+                          <IconButton aria-label="Comments">
+                            <ArrowForwardIos />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    </Link>
+                    <Divider />
                   </div>
-                </Toolbar>
-              </AppBar>
-            
-
-
-
-            <div className="row">
-              <div className="column">
-             
-                  <List className={classes.root}>
-                    {filtered.slice(0, 12).map(course => (
-                      <div className="listElement" key={course._id}>
-                         <Link to={{
-                            pathname: "/course",
-                            search: "?id="+course._id}}>
-                         
-                         <ListItem
-                          className="listItem"
-                          onClick={() => this.setSelectedCourse(course._id)}
-                        >
-                          {course.courseid}
-                          <br />
-                          {course.coursename}
-                          <ListItemSecondaryAction>
-                            <IconButton aria-label="Comments">
-                              <ArrowForwardIos />
-                            </IconButton>
-                          </ListItemSecondaryAction>
-                        </ListItem>
-                        </Link>
-                        <Divider />
-                      </div>
-                    ))}
-                  </List>
+                ))}
+              </List>
             </div>
-           
           </div>
         </React.Fragment>
       </div>

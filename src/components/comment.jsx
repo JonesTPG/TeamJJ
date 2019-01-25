@@ -7,8 +7,6 @@ import "../App.css";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
-
-
 class Comment extends Component {
   constructor(props) {
     super(props);
@@ -70,8 +68,10 @@ class Comment extends Component {
     return (
       <div>
         <div className="commentWriter">Anonymous</div>
-        <strong>kommentti {this.props.index + 1}</strong>
-        <p className="comment-text">{this.props.text}</p>
+        <div>
+          <strong>kommentti {this.props.index + 1}</strong>
+          <p className="comment-text">{this.props.text}</p>
+        </div>
         <div>
           {this.state.increment}
           <IconButton

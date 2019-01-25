@@ -5,25 +5,18 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import "../App.css";
+import { Link } from "react-router-dom";
 
 const styles = theme => ({
-  container: {
-    display: "flex",
-    flexWrap: "wrap"
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    color: "#2196f3"
-  },
-  rightIcon: {
-    marginLeft: theme.spacing.unit
-  },
   button: {
-    margin: theme.spacing.unit,
+    margin: 2,
     color: "#2196f3"
   },
   buttonCancel: {
+    margin: 2,
+    color: "inherit"
+  },
+  a: {
     color: "inherit"
   }
 });
@@ -77,35 +70,35 @@ class NewComment extends Component {
       <div>
         <div className="my-form">
           <form onSubmit={this.handleSubmit}>
-            <div className={classes.container} noValidate autoComplete="off">
-              <TextField
-                fullWidth
-                className={classes.textField}
-                label="Kirjoita kommentti"
-                placeholder="Kirjoita kommentti"
-                multiline
-                value={this.state.text}
-                onChange={this.handleChange}
-                margin="normal"
+            <TextField
+              className="textField"
+              fullWidth
+              label="Kirjoita kommentti"
+              placeholder="Kirjoita kommentti"
+              multiline
+              value={this.state.text}
+              onChange={this.handleChange}
+              margin="normal"
+              variant="outlined"
+            />
+            <div>
+              <Button
+                type="submit"
+                value="lähetä"
                 variant="outlined"
-              />
+                className={classes.button}
+              >
+                Lähetä
+              </Button>
+              <Button
+                color="inherit"
+                value="Peruuta"
+                variant="outlined"
+                className={classes.buttonCancel}
+              >
+                <Link to="/">peruuta</Link>
+              </Button>
             </div>
-            <Button
-              type="submit"
-              value="lähetä"
-              variant="outlined"
-              className={classes.button}
-            >
-              Lähetä
-            </Button>
-            <Button
-              color="inherit"
-              value="Peruuta"
-              variant="outlined"
-              className={classes.buttonCancel}
-            >
-              peruuta
-            </Button>
           </form>
           <p>{this.state.message}</p>
         </div>
