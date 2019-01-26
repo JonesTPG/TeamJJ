@@ -116,13 +116,13 @@ header,
   border-radius: 13px;
   /* (height of inner div) / 2 + padding */
   padding: 3px;
-  text-align: center;
+ 
 }
 
 #progress {
   text-align: center;
   background-color: #2196f3;
-  width: 20%; /* Adjust with JavaScript */
+  width: 0%; /*  Adjust with JavaScript  */
   height: 20px;
   border-radius: 10px;
 }

@@ -7,13 +7,16 @@ import axios from "axios";
 import queryString from "query-string";
 import Appbar from "./appbar";
 import "../App.css";
+import { throws } from "assert";
 
 class SelectedCourse extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      selected: {}, //stores the currently selected course's information
+      selected: {
+        rating: 0
+      }, //stores the currently selected course's information
       comments: null, //stores the comments related to selected course
       id: null //NEW: gets the id from url
     };
@@ -25,7 +28,7 @@ class SelectedCourse extends Component {
       id: parsed.id
     });
     this.getSelectedCourse(parsed.id);
-    this.getComments(parsed.id);
+    this.getComments(parsed.id); 
   }
 
   //this component is dependent from the course id it gets, so we have to listen to
@@ -72,26 +75,27 @@ class SelectedCourse extends Component {
 
   updateRating = () => {
     this.getSelectedCourse(this.state.id);
+   
   };
 
   updateRatingBar = () => {
-    let element = document.getElementById("progress");
-    let ratingPercentage = this.state.selected.rating * 20;
-    let ratingString = ratingPercentage.toString() + "%";
+    console.log('rating: ' + this.state.selected.rating)
+    const element = document.getElementById("progress");
+    const ratingPercentage = this.state.selected.rating * 20;
+    const ratingString = ratingPercentage.toString() + "%";
     element.style["width"] = ratingString;
   };
 
   render() {
-    let id = this.state.id;
+   
 
-    //there is no course selected
-
+    
     //there are no comments, so don't render the comments list
     if (this.state.comments === null) {
       return (
         <div className="some-page-wrapper">
           <React.Fragment>
-            <Appbar position="fixed" />
+            
             <div className="selectedCourse">
               <div className="course-view">
                 <h3>
@@ -131,7 +135,7 @@ class SelectedCourse extends Component {
     else {
       return (
         <div>
-          <Appbar />
+         
           <div className="some-page-wrapper">
             <React.Fragment>
               <div className="row">

@@ -90,14 +90,16 @@ class NewComment extends Component {
               >
                 Lähetä
               </Button>
-              <Button
-                color="inherit"
-                value="Peruuta"
-                variant="outlined"
-                className={classes.buttonCancel}
-              >
-                <Link to="/">peruuta</Link>
-              </Button>
+              <Link to="/">
+                <Button
+                  color="inherit"
+                  value="Peruuta"
+                  variant="outlined"
+                  className={classes.buttonCancel}
+                >
+                Peruuta
+                </Button>
+              </Link>
             </div>
           </form>
           <p>{this.state.message}</p>

@@ -1,20 +1,19 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import List from "@material-ui/core/List";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
-import SearchIcon from "@material-ui/icons/Search";
-import InputBase from "@material-ui/core/InputBase";
+
 import { fade } from "@material-ui/core/styles/colorManipulator";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import ArrowForwardIos from "@material-ui/icons/ArrowForwardIos";
 import axios from "axios";
 import "../App.css";
+
+
 
 const styles = theme => ({
   avatar: {
@@ -79,6 +78,7 @@ const styles = theme => ({
   }
 });
 
+
 class Courses extends Component {
   constructor(props) {
     super(props);
@@ -89,12 +89,15 @@ class Courses extends Component {
       selectedCourse: null,
       course_id: null //stores the currently selected course id
     };
-    this.setFilter = this.setFilter.bind(this);
+   
     this.setSelectedCourse = this.setSelectedCourse.bind(this);
   }
 
   // fetch data from mlab database, add to courses
   componentDidMount() {
+    this.setState({
+      filter: this.props.filter
+    })
     this.getDataFromDb();
   }
 
@@ -107,10 +110,7 @@ class Courses extends Component {
     });
   };
 
-  setFilter(e) {
-    this.setState({ filter: e.target.value });
-  }
-
+  
   setSelectedCourse(course) {
     this.setState({ course_id: course });
   }
@@ -126,32 +126,13 @@ class Courses extends Component {
       course =>
         course.coursename
           .toLowerCase()
-          .indexOf(this.state.filter.toLowerCase()) !== -1
+          .indexOf(this.props.filter.toLowerCase()) !== -1
     );
 
     return (
       <div className="some-page-wrapper">
         <React.Fragment>
-          <AppBar position="fixed">
-            <Toolbar className="appbar">
-              <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                  <SearchIcon className="search" />
-                </div>
-
-                <InputBase
-                  className="search"
-                  value={this.state.filter}
-                  onChange={this.setFilter}
-                  placeholder="Hae kurssia..."
-                  classes={{
-                    root: classes.inputRoot,
-                    input: classes.inputInput
-                  }}
-                />
-              </div>
-            </Toolbar>
-          </AppBar>
+         
 
           <div className="row">
             <div className="column">
