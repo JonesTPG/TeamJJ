@@ -13,7 +13,94 @@ import ArrowForwardIos from "@material-ui/icons/ArrowForwardIos";
 import axios from "axios";
 import "../App.css";
 
+class Courses extends Component {
+  constructor(props) {
+    super(props);
 
+    this.state = {
+      courses: null,
+      filter: "",
+      selectedCourse: null,
+      course_id: null //stores the currently selected course id
+    };
+
+    this.setSelectedCourse = this.setSelectedCourse.bind(this);
+  }
+
+  // fetch data from mlab database, add to courses
+  componentDidMount() {
+    this.setState({
+      filter: this.props.filter
+    });
+    this.getDataFromDb();
+  }
+
+  getDataFromDb = () => {
+    axios.get("/api/all").then(response => {
+      let data = JSON.parse(response.data);
+      this.setState({
+        courses: data
+      });
+    });
+  };
+
+  setSelectedCourse(course) {
+    this.setState({ course_id: course });
+  }
+
+  render() {
+    const { classes } = this.props;
+
+    if (this.state.courses === null) {
+      return "loading";
+    }
+
+    const filtered = this.state.courses.filter(
+      course =>
+        course.coursename
+          .toLowerCase()
+          .indexOf(this.props.filter.toLowerCase()) !== -1
+    );
+
+    return (
+      <div className="some-page-wrapper">
+        <React.Fragment>
+          <div className="row">
+            <div className="column">
+              <List className={classes.root}>
+                {filtered.slice(0, 12).map(course => (
+                  <div className="listElement" key={course._id}>
+                    <Link
+                      to={{
+                        pathname: "/course",
+                        search: "?id=" + course._id
+                      }}
+                    >
+                      <ListItem
+                        className="listItem"
+                        onClick={() => this.setSelectedCourse(course._id)}
+                      >
+                        {course.courseid}
+                        <br />
+                        {course.coursename}
+                        <ListItemSecondaryAction>
+                          <IconButton aria-label="Comments">
+                            <ArrowForwardIos />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    </Link>
+                    <Divider />
+                  </div>
+                ))}
+              </List>
+            </div>
+          </div>
+        </React.Fragment>
+      </div>
+    );
+  }
+}
 
 const styles = theme => ({
   avatar: {
@@ -77,99 +164,6 @@ const styles = theme => ({
     }
   }
 });
-
-
-class Courses extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      courses: null,
-      filter: "",
-      selectedCourse: null,
-      course_id: null //stores the currently selected course id
-    };
-   
-    this.setSelectedCourse = this.setSelectedCourse.bind(this);
-  }
-
-  // fetch data from mlab database, add to courses
-  componentDidMount() {
-    this.setState({
-      filter: this.props.filter
-    })
-    this.getDataFromDb();
-  }
-
-  getDataFromDb = () => {
-    axios.get("/api/all").then(response => {
-      let data = JSON.parse(response.data);
-      this.setState({
-        courses: data
-      });
-    });
-  };
-
-  
-  setSelectedCourse(course) {
-    this.setState({ course_id: course });
-  }
-
-  render() {
-    const { classes } = this.props;
-
-    if (this.state.courses === null) {
-      return "loading";
-    }
-
-    const filtered = this.state.courses.filter(
-      course =>
-        course.coursename
-          .toLowerCase()
-          .indexOf(this.props.filter.toLowerCase()) !== -1
-    );
-
-    return (
-      <div className="some-page-wrapper">
-        <React.Fragment>
-         
-
-          <div className="row">
-            <div className="column">
-              <List className={classes.root}>
-                {filtered.slice(0, 12).map(course => (
-                  <div className="listElement" key={course._id}>
-                    <Link
-                      to={{
-                        pathname: "/course",
-                        search: "?id=" + course._id
-                      }}
-                    >
-                      <ListItem
-                        className="listItem"
-                        onClick={() => this.setSelectedCourse(course._id)}
-                      >
-                        {course.courseid}
-                        <br />
-                        {course.coursename}
-                        <ListItemSecondaryAction>
-                          <IconButton aria-label="Comments">
-                            <ArrowForwardIos />
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    </Link>
-                    <Divider />
-                  </div>
-                ))}
-              </List>
-            </div>
-          </div>
-        </React.Fragment>
-      </div>
-    );
-  }
-}
 Courses.propTypes = {
   classes: PropTypes.object.isRequired
 };

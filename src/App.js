@@ -9,42 +9,42 @@ import About from "./components/about";
 import Header from "./components/header";
 
 class App extends Component {
-  
   constructor(props) {
     super(props);
 
-    this.state = { 
-      filter: ''
-    }
+    this.state = {
+      filter: ""
+    };
   }
 
-
-  handleFilter = (newFilter) => {
+  handleFilter = newFilter => {
     console.log("uusi filter:" + newFilter);
-    this.setState({filter: newFilter});
-  }
+    this.setState({ filter: newFilter });
+  };
 
-  
   render() {
-    
+    /*const path = (this.path = this.props.location.pathname.replace(/\//g, ""));
+
+    if(path !== '')*/
+
     return (
-      <>   
+      <>
         <BrowserRouter>
-        <div>
-          <Header 
-            updateFilter={this.handleFilter}
-            backEnabled={this.state.backEnabled}
-          />
+          <div>
+            <Header updateFilter={this.handleFilter} />
             <Switch>
               <Route path="/course" component={SelectedCourse} />
               <Route path="/about" component={About} />
-              <Route path="/" 
-                     render={(routeProps) => (<Courses {...routeProps} 
-                      filter={this.state.filter}/>)} 
-                      exact />
+              <Route
+                path="/"
+                render={routeProps => (
+                  <Courses {...routeProps} filter={this.state.filter} />
+                )}
+                exact
+              />
               <Route component={Error} />
             </Switch>
-        </div>
+          </div>
         </BrowserRouter>
         <Footer />
       </>

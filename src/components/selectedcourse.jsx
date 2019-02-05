@@ -5,9 +5,7 @@ import NewComment from "./newcomment";
 import Rating from "./rating";
 import axios from "axios";
 import queryString from "query-string";
-import Appbar from "./appbar";
 import "../App.css";
-import { throws } from "assert";
 
 class SelectedCourse extends Component {
   constructor(props) {
@@ -28,7 +26,7 @@ class SelectedCourse extends Component {
       id: parsed.id
     });
     this.getSelectedCourse(parsed.id);
-    this.getComments(parsed.id); 
+    this.getComments(parsed.id);
   }
 
   //this component is dependent from the course id it gets, so we have to listen to
@@ -75,11 +73,10 @@ class SelectedCourse extends Component {
 
   updateRating = () => {
     this.getSelectedCourse(this.state.id);
-   
   };
 
   updateRatingBar = () => {
-    console.log('rating: ' + this.state.selected.rating)
+    console.log("rating: " + this.state.selected.rating);
     const element = document.getElementById("progress");
     const ratingPercentage = this.state.selected.rating * 20;
     const ratingString = ratingPercentage.toString() + "%";
@@ -87,15 +84,11 @@ class SelectedCourse extends Component {
   };
 
   render() {
-   
-
-    
     //there are no comments, so don't render the comments list
     if (this.state.comments === null) {
       return (
         <div className="some-page-wrapper">
           <React.Fragment>
-            
             <div className="selectedCourse">
               <div className="course-view">
                 <h3>
@@ -134,61 +127,58 @@ class SelectedCourse extends Component {
     //course is selected and it has comments, display the information
     else {
       return (
-        <div>
-         
-          <div className="some-page-wrapper">
-            <React.Fragment>
-              <div className="row">
-                <div className="column">
-                  <div className="selectedCourse">
-                    <div className="course-view">
-                      <h3>
-                        {this.state.selected.coursename}{" "}
-                        {this.state.selected.courseid}
-                        <hr />
-                      </h3>
-                      <h4>
-                        Kurssin rating: {this.state.selected.rating.toFixed(2)}
-                      </h4>
+        <div className="some-page-wrapper">
+          <React.Fragment>
+            <div className="row">
+              <div className="column">
+                <div className="selectedCourse">
+                  <div className="course-view">
+                    <h3>
+                      {this.state.selected.coursename}{" "}
+                      {this.state.selected.courseid}
+                      <hr />
+                    </h3>
+                    <h4>
+                      Kurssin rating: {this.state.selected.rating.toFixed(2)}
+                    </h4>
 
-                      <div className="progress-bar">
-                        <div id="progress" />
-                      </div>
+                    <div className="progress-bar">
+                      <div id="progress" />
+                    </div>
 
-                      <Rating
+                    <Rating
+                      courseId={this.state.id}
+                      updateFunction={this.updateRating}
+                    />
+                    <div className="comments-list">
+                      <ul>
+                        {this.state.comments.map((comment, index) => (
+                          <div key={comment._id}>
+                            <Comment
+                              text={comment.text}
+                              upvotes={comment.upvotes}
+                              downvotes={comment.downvotes}
+                              username={comment.username}
+                              commentId={comment._id}
+                              index={index}
+                            />
+                            <hr />
+                          </div>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="new-comment">
+                      <NewComment
                         courseId={this.state.id}
-                        updateFunction={this.updateRating}
+                        updateFunction={this.updateComments}
                       />
-                      <div className="comments-list">
-                        <ul>
-                          {this.state.comments.map((comment, index) => (
-                            <div key={comment._id}>
-                              <Comment
-                                text={comment.text}
-                                upvotes={comment.upvotes}
-                                downvotes={comment.downvotes}
-                                username={comment.username}
-                                commentId={comment._id}
-                                index={index}
-                              />{" "}
-                              <hr />
-                            </div>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="new-comment">
-                        <NewComment
-                          courseId={this.state.id}
-                          updateFunction={this.updateComments}
-                        />
-                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </React.Fragment>
-          </div>
+            </div>
+          </React.Fragment>
         </div>
       );
     }

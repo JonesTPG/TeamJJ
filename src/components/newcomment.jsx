@@ -14,7 +14,7 @@ const styles = theme => ({
   },
   buttonCancel: {
     margin: 2,
-    color: "inherit"
+    color: "#333"
   },
   a: {
     color: "inherit"
@@ -67,43 +67,41 @@ class NewComment extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <div>
-        <div className="my-form">
-          <form onSubmit={this.handleSubmit}>
-            <TextField
-              className="textField"
-              fullWidth
-              label="Kirjoita kommentti"
-              placeholder="Kirjoita kommentti"
-              multiline
-              value={this.state.text}
-              onChange={this.handleChange}
-              margin="normal"
+      <div className="my-form">
+        <form onSubmit={this.handleSubmit}>
+          <TextField
+            className="textField"
+            fullWidth
+            label="Kirjoita kommentti"
+            placeholder="Kirjoita kommentti"
+            multiline
+            value={this.state.text}
+            onChange={this.handleChange}
+            margin="normal"
+            variant="outlined"
+          />
+          <div>
+            <Button
+              type="submit"
+              value="lähetä"
               variant="outlined"
-            />
-            <div>
+              className={classes.button}
+            >
+              Lähetä
+            </Button>
+            <Link to="/">
               <Button
-                type="submit"
-                value="lähetä"
+                color="inherit"
+                value="Peruuta"
                 variant="outlined"
-                className={classes.button}
+                className={classes.buttonCancel}
               >
-                Lähetä
-              </Button>
-              <Link to="/">
-                <Button
-                  color="inherit"
-                  value="Peruuta"
-                  variant="outlined"
-                  className={classes.buttonCancel}
-                >
                 Peruuta
-                </Button>
-              </Link>
-            </div>
-          </form>
-          <p>{this.state.message}</p>
-        </div>
+              </Button>
+            </Link>
+          </div>
+        </form>
+        <p>{this.state.message}</p>
       </div>
     );
   }

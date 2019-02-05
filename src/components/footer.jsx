@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
-import CssBaseline from "@material-ui/core/CssBaseline";
 import Toolbar from "@material-ui/core/Toolbar";
 import "../App.css";
 
@@ -31,15 +30,18 @@ const styles = theme => ({
     fontWeight: 600,
     margin: "0px 6px 8px 10px",
     alignItems: "center"
+  },
+  footerDivider: {
+    color: "#2196f3",
+    zIndex: 2
   }
 });
 
 function Footer(props) {
   const { classes } = props;
   return (
-    <div className="bottomBar">
+    <div>
       <React.Fragment>
-        <CssBaseline />
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar className={classes.toolbar}>
             <div className="footer-align">
