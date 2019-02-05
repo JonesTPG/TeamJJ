@@ -23,10 +23,6 @@ class App extends Component {
   };
 
   render() {
-    /*const path = (this.path = this.props.location.pathname.replace(/\//g, ""));
-
-    if(path !== '')*/
-
     return (
       <>
         <BrowserRouter>
